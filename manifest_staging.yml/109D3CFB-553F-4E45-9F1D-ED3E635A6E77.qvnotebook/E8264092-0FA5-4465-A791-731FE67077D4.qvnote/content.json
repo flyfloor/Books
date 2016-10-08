@@ -1,0 +1,53 @@
+{
+  "title": "Boost cache 服务端被动更新",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 简要流程"
+    },
+    {
+      "type": "diagram",
+      "diagramType": "flow",
+      "data": "start=>start: fetch\ngetCache=>operation: 1.查询缓存\nend=>end: 返回数据\ncond1=>condition: 有缓存?\ngetData=>operation: 2.取数据，设置缓存\n\nstart->getCache->cond1\ncond1(no)->getData->end\ncond1(yes)->end"
+    },
+    {
+      "type": "markdown",
+      "data": "### 子流程:"
+    },
+    {
+      "type": "markdown",
+      "data": "### 1.查询缓存"
+    },
+    {
+      "type": "diagram",
+      "diagramType": "flow",
+      "data": "start=>start: 请求(url+params)\nend=>end: 返回缓存数据\nsort=>operation: 参数排序、哈希,生成key\ngetCache=>operation: 通过key查询缓存\ncond1=>condition: 100ms 内读取到缓存?\ngetData=>operation: 2.取数据，设置缓存\n\nstart->sort->getCache->cond1\ncond1(yes)->end\ncond1(no)->getData->end\n"
+    },
+    {
+      "type": "markdown",
+      "data": "### 2.取数据，设置缓存  "
+    },
+    {
+      "type": "diagram",
+      "diagramType": "flow",
+      "data": "start=>start: 无缓存数据\nend=>end: 结束\nend=>end: 4.设置缓存\nfetch=>operation: 请求后端数据\nsetCache=>operation: 返回数据\n\nstart->fetch->setCache->end\n"
+    },
+    {
+      "type": "markdown",
+      "data": "### 4.设置缓存"
+    },
+    {
+      "type": "diagram",
+      "diagramType": "flow",
+      "data": "start=>start: 缓存数据，缓存key\nend=>end: 结束\nreturnData=>operation: 返回数据\nfreshMark=>operation: 设置数据新鲜度\nsetData=>operation: 存储缓存(存储数据、缓存时长，新鲜度)\n\nstart->freshMark->returnData->setData->end"
+    },
+    {
+      "type": "markdown",
+      "data": "## 存储数据格式\n\n```\n{\n  key: hash(url+params),\n  value: \"{..., _v: hash(update time)}\"\n}\n```"
+    },
+    {
+      "type": "markdown",
+      "data": "## API\n\nBoostCache:\n\n#### config(暂未未提供，不需要配置):  \n参数：配置服务器地址、group_name\n返回：tair 实例\n\n#### get:  \n根据 url 获得缓存数据  \n参数：url  \n返回：data\n\n#### set:  \n同步设置缓存数据，返回缓存设置成功与否标识  \n参数：url, data, expire (默认 600秒缓存失效) \n返回：true || false\n\n#### setAsync:  \n异步设置缓存数据\n参数：url, data, exipre(默认 600秒缓存失效), callback(可选)  \n返回: true || false\n"
+    }
+  ]
+}

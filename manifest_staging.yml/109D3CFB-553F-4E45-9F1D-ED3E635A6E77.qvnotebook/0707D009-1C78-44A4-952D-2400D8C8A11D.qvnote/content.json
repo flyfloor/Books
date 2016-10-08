@@ -1,0 +1,9 @@
+{
+  "title": "活动",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "1.商家后台：\n\n配置活动：   \n小票活动   （迁移问题）\n微信公众号领券活动\n核销（微信公众号领券）\n注意：商家如何控制发哪家店的券 ？ 通过poiId? \n\n2.mis后台：权限控制 （增、删、改）  ：\n注意： 权限同财物系统的商家用户权限是同一批人\n\n3.微信公众号领券： 走手机验证码，再领券，三种状态：领取、已经领取、已经核销\n\n\n\n\n### SSO\n\n1. 申请staging prod 域名\n2. client_id, client_secret\n3. settoken set cookie bsid\n4. cookie bsid, 没有 => 跳转 login, 有 bsid 获取 bis info"
+    }
+  ]
+}
