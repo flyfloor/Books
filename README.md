@@ -1,4 +1,4 @@
-notes and references
+Note
 ===============
 
-some reference books and notes
+~
